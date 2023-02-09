@@ -1,5 +1,4 @@
 import requests
-import js2py
 import json
 
 
