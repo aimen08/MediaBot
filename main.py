@@ -121,9 +121,12 @@ def tiktok(message):
         bot.send_message(chatId,  "حدث خطأ يرجى التأكد من الرابط ⚠️") 
         return 
     bot.send_chat_action(chatId, 'upload_video') 
-    bot.send_video(chatId,link,reply_markup=resultKeyboard(url=url))
-    bot.delete_message(chatId, message.id)
-    logger.info("[✔] {} tiktok video downloaded".format(user))
+    try :
+        bot.send_video(chatId,link,reply_markup=resultKeyboard(url=url))
+        bot.delete_message(chatId, message.id)
+        logger.info("[✔] {} tiktok video downloaded".format(user))
+    except: 
+        bot.send_message(chatId,  "الفيديو كبير التيلغرام لا يسمح بتنزيله ⚠️") 
 
 
 @bot.message_handler(commands=['snapchat'])
