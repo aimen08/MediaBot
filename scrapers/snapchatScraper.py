@@ -3,6 +3,7 @@ import json
 import time
 import re
 import requests
+from .keyboard import successKeyboard
 
 
 class APIResponseError(Exception):
@@ -88,4 +89,4 @@ class SnapchatDL:
             except :
                 bot.send_message(chatId, "هذا الحساب ليس لديه ملف تعريفي عام 👻")                    
                 return 
-        bot.send_message(chatId, "تم تحميل قصص المستخدم .")
+        bot.send_message(chatId, "تم التحميل بنجاح ✅",reply_markup=successKeyboard())

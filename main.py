@@ -6,7 +6,7 @@ from scrapers.tikTokScraper import getTikTokVideo
 from scrapers.instagramScraper import getInstagramVideo
 from scrapers.twitterScraper import getTwitterVideo
 from scrapers.snapchatScraper import SnapchatDL
-from keyboard import *
+from scrapers.keyboard import *
 import uuid
 
 
@@ -97,6 +97,7 @@ def instagram(chatId,user,url,messageID):
     bot.delete_message(chatId, messageID)
 
     logger.info("[✔] {} instagram video downloaded".format(user))
+    bot.send_message(chatId, "تم التحميل بنجاح ✅",reply_markup=successKeyboard())
 
 
 
@@ -113,6 +114,7 @@ def tiktok(chatId,user,url,messageID):
         bot.send_video(chatId,link,reply_markup=resultKeyboard(url=url))
         bot.delete_message(chatId, messageID)
         logger.info("[✔] {} tiktok video downloaded".format(user))
+        bot.send_message(chatId, "تم التحميل بنجاح ✅",reply_markup=successKeyboard())
     except: 
         bot.send_message(chatId,  "الفيديو كبير التيلغرام لا يسمح بتنزيله ⚠️") 
 
@@ -130,6 +132,7 @@ def twitter(chatId,user,url,messageID):
     bot.send_video(chatId,link,reply_markup=resultKeyboard(url=url))
     bot.delete_message(chatId, messageID)
     logger.info("[✔] {} twitter video downloaded".format(user))
+    bot.send_message(chatId, "تم التحميل بنجاح ✅",reply_markup=successKeyboard())
 
 
 
