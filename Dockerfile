@@ -7,4 +7,4 @@ COPY . .
 RUN pip install pyTelegramBotAPI python-dotenv loguru bs4
 
 
-CMD [ "python", "./main.py" ]
+CMD [ "python", "main.py" ]
