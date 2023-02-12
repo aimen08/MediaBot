@@ -1,6 +1,8 @@
 FROM python:3.9
 
-ADD . .
+WORKDIR /mediabot
+
+COPY . .
 
 RUN pip install pyTelegramBotAPI python-dotenv loguru bs4
 
