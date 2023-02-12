@@ -7,6 +7,7 @@ from scrapers.instagramScraper import getInstagramVideo
 from scrapers.twitterScraper import getTwitterVideo
 from scrapers.snapchatScraper import SnapchatDL
 from scrapers.keyboard import *
+from models import dbQuery
 import uuid
 
 
@@ -27,10 +28,26 @@ tikTokDomains = (
 twitterDomains = (
     'https://twitter.com', 
 )
+dbSql = dbQuery("database.sqlite")
 
 
-@bot.message_handler(commands=['start','mychannel'])
+@bot.message_handler(commands=['start'])
 def start(message):
+   
+    bot.send_message(message.chat.id,
+    """بوت تيليجرام خاص بتحميل فيديوهات من سناب شات و إنستغرام وتيكتوك وتويتر يسمح للمستخدم بتحميل الفيديوهات بطريقة سهلة وسريعة من أشهر تطبيقات التواصل الاجتماعي دون الحاجة إلى تحميل أي تطبيقات إضافية
+    
+    للمزيد تابعني عبر قناتي https://t.me/false10
+
+    أو عبر حسابي في السناب https://www.snapchat.com/add/rashed
+    """)
+    username = message.chat.username
+    userId = message.chat.id
+    dbSql.setUser(userId, username)
+
+
+@bot.message_handler(commands=['mychannel'])
+def mychannel(message):
    
     bot.send_message(message.chat.id,
     """بوت تيليجرام خاص بتحميل فيديوهات من سناب شات و إنستغرام وتيكتوك وتويتر يسمح للمستخدم بتحميل الفيديوهات بطريقة سهلة وسريعة من أشهر تطبيقات التواصل الاجتماعي دون الحاجة إلى تحميل أي تطبيقات إضافية
@@ -98,6 +115,7 @@ def instagram(chatId,user,url,messageID):
 
     logger.info("[✔] {} instagram video downloaded".format(user))
     bot.send_message(chatId, "تم التحميل بنجاح ✅",reply_markup=successKeyboard())
+    dbSql.increaseCounter('instagram')
 
 
 
@@ -115,6 +133,7 @@ def tiktok(chatId,user,url,messageID):
         bot.delete_message(chatId, messageID)
         logger.info("[✔] {} tiktok video downloaded".format(user))
         bot.send_message(chatId, "تم التحميل بنجاح ✅",reply_markup=successKeyboard())
+        dbSql.increaseCounter('tiktok')
     except: 
         bot.send_message(chatId,  "الفيديو كبير التيلغرام لا يسمح بتنزيله ⚠️") 
 
@@ -133,6 +152,7 @@ def twitter(chatId,user,url,messageID):
     bot.delete_message(chatId, messageID)
     logger.info("[✔] {} twitter video downloaded".format(user))
     bot.send_message(chatId, "تم التحميل بنجاح ✅",reply_markup=successKeyboard())
+    dbSql.increaseCounter('twitter')
 
 
 
@@ -141,6 +161,7 @@ def snapchat(chatId,user,snapuser,messageID):
     SnapchatDL().download(snapuser, chatId, bot)
     bot.delete_message(chatId, messageID)
     logger.info("[✔] {} snapchat stories downloaded".format(user))
+    dbSql.increaseCounter('snapchat')
 
 
 
