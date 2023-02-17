@@ -11,6 +11,7 @@ from models import dbQuery
 import uuid
 
 
+
 load_dotenv()
 
 API_KEY= os.getenv("API_KEY")
