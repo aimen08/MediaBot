@@ -4,7 +4,7 @@ WORKDIR /mediabot
 
 COPY . .
 
-RUN pip install pyTelegramBotAPI python-dotenv loguru bs4 cloudscraper
+RUN pip install pyTelegramBotAPI python-dotenv loguru bs4 cloudscraper requests equests_toolbelt pyparsing 
 
 
 CMD [ "python", "main.py" ]
