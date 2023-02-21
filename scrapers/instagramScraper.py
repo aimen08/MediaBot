@@ -13,7 +13,7 @@ def getInstagramVideo(url):
         }
 
         response = requests.get('https://api.instavideosave.com/allinone', headers=headers, allow_redirects=True)
-
+        print(response.content)
         link = json.loads(response.content.decode('unicode_escape'))["video"][0]["video"]
         return link
 
