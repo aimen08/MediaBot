@@ -1,6 +1,8 @@
 import requests
 import json
-from loguru import logger
+import cloudscraper
+
+scraper = cloudscraper.create_scraper() 
 
 def getInstagramVideo(url):
 
@@ -12,14 +14,12 @@ def getInstagramVideo(url):
             'accept': '*/*'
         }
 
-        response = requests.get('https://api.instavideosave.com/allinone', headers=headers, allow_redirects=True)
-        logger.info(response.content)
+        response = scraper.get('https://api.instavideosave.com/allinone', headers=headers)
 
-        link = json.loads(response.content.decode('unicode_escape'))["video"][0]["video"]
+        link = json.loads(response.text)["video"][0]["video"]
         return link
 
     except Exception as e:
-        logger.info(e)
         return {
             'success': False,
             'error': e
