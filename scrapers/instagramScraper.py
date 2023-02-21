@@ -1,6 +1,7 @@
 import requests
 import json
 import cloudscraper
+from loguru import logger
 
 scraper = cloudscraper.create_scraper() 
 
@@ -15,7 +16,7 @@ def getInstagramVideo(url):
         }
 
         response = scraper.get('https://api.instavideosave.com/allinone', headers=headers)
-
+        logger.info(response.text)
         link = json.loads(response.text)["video"][0]["video"]
         return link
 
