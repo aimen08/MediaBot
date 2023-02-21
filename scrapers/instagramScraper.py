@@ -2,7 +2,7 @@ import requests
 import json
 import cloudscraper
 from bs4 import BeautifulSoup
-
+from loguru import logger
 
 scraper = cloudscraper.create_scraper() 
 
@@ -21,12 +21,13 @@ def getInstagramVideo(url):
             'downloader': 'video'
         }
         response = scraper.post('https://instaoffline.net/process/',data=data, headers=headers)
-       
+        logger.info(response.text)
         soup = BeautifulSoup(json.loads(response.text)['html'], 'html.parser')    
         link = soup.findAll('a',attrs={'class':'button'})[0]['href']
         return link
 
     except Exception as e:
+        logger.info(e)
         return {
             'success': False,
             'error': e
