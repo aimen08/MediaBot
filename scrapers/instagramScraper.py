@@ -21,6 +21,7 @@ def getInstagramVideo(url):
         return link
 
     except Exception as e:
+        logger.info(e)
         return {
             'success': False,
             'error': e
