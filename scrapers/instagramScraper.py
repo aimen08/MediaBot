@@ -1,6 +1,6 @@
 import requests
 import json
-
+from loguru import logger
 
 def getInstagramVideo(url):
 
@@ -13,11 +13,13 @@ def getInstagramVideo(url):
         }
 
         response = requests.get('https://api.instavideosave.com/allinone', headers=headers, allow_redirects=True)
-        print(response.content)
+        logger.info(response.content)
+
         link = json.loads(response.content.decode('unicode_escape'))["video"][0]["video"]
         return link
 
     except Exception as e:
+        logger.info(e)
         return {
             'success': False,
             'error': e
