@@ -1,5 +1,6 @@
 import os
 import telebot
+import time
 from dotenv import load_dotenv
 from loguru import logger
 from scrapers.tikTokScraper import getTikTokVideo
@@ -15,6 +16,7 @@ import uuid
 load_dotenv()
 
 API_KEY= os.getenv("API_KEY")
+ADMIN= os.getenv("ADMIN")
 bot = telebot.TeleBot(API_KEY,threaded=True,num_threads=10)
 telebot.apihelper.SESSION_TIME_TO_LIVE = 5 * 60
 
@@ -45,6 +47,22 @@ def start(message):
     username = message.chat.username
     userId = message.chat.id
     dbSql.setUser(userId, username)
+
+@bot.message_handler(commands=['broadcast'])
+def broadcast(message):
+    admin = str(message.chat.id)
+    if admin != ADMIN:
+        bot.send_message(message.chat.id,"هذه الخدمة متاحة فقط لحساب أدمين")
+        return
+    if len(message.text.split()) <= 1:
+        return
+    text = message.text.split(' ', 1)[1]
+    users = dbSql.getAllUsers()
+    for index, id in enumerate(users) :
+        if (index+1) % 30 == 0:
+            time.sleep(1)
+        bot.send_message(id,text)
+        logger.info("[✔] broadcast is done to {} user".format(index+1))
 
 
 @bot.message_handler(commands=['mychannel'])
@@ -77,6 +95,7 @@ def prompt(message):
         bot.send_message(message.chat.id, "الرجاء التأكد من الرابط 🔗")
         return 
     url = url[0]
+    dbSql.setUser(chatId, user)
     if url.lower().startswith(instagramDomains):
         if not url.startswith('http'):
             url = 'https://' + url
