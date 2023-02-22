@@ -61,8 +61,11 @@ def broadcast(message):
     for index, id in enumerate(users) :
         if (index+1) % 30 == 0:
             time.sleep(1)
-        bot.send_message(id,text)
-        logger.info("[✔] broadcast is done to {} user".format(index+1))
+        try:
+            bot.send_message(id,text)
+        except :
+            continue
+    logger.info("[✔] broadcast is done to {} user".format(len(users)))
 
 
 @bot.message_handler(commands=['mychannel'])
